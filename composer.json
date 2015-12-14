@@ -1,0 +1,9 @@
+{
+	"name": "marketo/silverstripe-performable-sitemaps",
+	"description": "Creates a Sitemap PageType and generates sitemap.xml files specific to each domain",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "sitemap"],
+	"license": "BSD-3-Clause",
+
+	"minimum-stability": "dev"
+}
