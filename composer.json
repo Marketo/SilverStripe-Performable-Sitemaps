@@ -1,25 +1,25 @@
 {
-name: "marketo/silverstripe-performable-sitemaps",
-description: "Creates a Sitemap PageType and generates sitemap.xml files specific to each domain",
-type: "silverstripe-module",
-keywords: [
-"silverstripe",
-"sitemap"
-],
-require: {
-silverstripe/queuedjobs: "2.8.3",
-silverstripe/cms: "3.*",
-composer/installers: "*"
-},
-support: {
-issues: "https://github.com/Marketo/SilverStripe-Social-Proof/issues"
-},
-license: "BSD-3-Clause",
-authors: [
-{
-name: "Kirk Mayo",
-email: "kirk@stripetheweb.com"
-}
-],
-minimum-stability: "dev"
+	"name": "marketo/silverstripe-performable-sitemaps",
+	"description": "Creates a Sitemap PageType and generates sitemap.xml files specific to each domain",
+	"type": "silverstripe-module",
+	"keywords": [
+		"silverstripe",
+		"sitemap"
+	],
+	"require": {
+		"silverstripe/queuedjobs": "2.8.3",
+		"silverstripe/cms": "3.*",
+		"composer/installers": "*"
+	},
+	"support": {
+		"issues": "https://github.com/Marketo/SilverStripe-Social-Proof/issues"
+	},
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Kirk Mayo",
+			"email": "kirk@stripetheweb.com"
+		}
+	],
+	"minimum-stability": "dev"
 }
