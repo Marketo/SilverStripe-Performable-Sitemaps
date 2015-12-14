@@ -12,7 +12,7 @@
 		"composer/installers": "*"
 	},
 	"support": {
-		"issues": "https://github.com/Marketo/SilverStripe-Social-Proof/issues"
+		"issues": "https://github.com/Marketo/SilverStripe-Performable-Sitemaps/issues"
 	},
 	"license": "BSD-3-Clause",
 	"authors": [
