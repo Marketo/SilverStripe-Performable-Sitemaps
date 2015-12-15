@@ -81,6 +81,6 @@ class SiteDataServicePage_Controller extends ContentController {
 
         return $this->customise(new ArrayData(array(
             'Content' => $content . $sitemap
-        )));
+        )))->renderWith('Page');
     }
 }
