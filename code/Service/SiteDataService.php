@@ -169,8 +169,8 @@ class SiteDataService {
             // add stuff
             $ul = $xml->addChild('ul');
             $li = $ul->addChild('li');
-            $href = $li->addChild('a', $page['Title']);
-            $href->addAttribute('href', $page['URLSegment']);
+            $li->a = $page['Title'];
+            $li->a->addAttribute('href', $page['URLSegment']);
             // check if they have children
             if (isset($page['kids'])) {
                 foreach ($page['kids'] as $index => $subPage) {
