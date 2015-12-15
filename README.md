@@ -19,7 +19,7 @@ Kirk Mayo
 
 ## Composer Installation
 
-  composer require marketo/
+  composer require Marketo/SilverStripe-Performable-Sitemaps
 
 ## TODO
 
