@@ -38,7 +38,7 @@ class GenerateSiteMapJob extends AbstractQueuedJob {
 
     public function process() {
         $sitemap = BASE_PATH . '/sitemap.xml';
-        $siteData = singleton('SiteDataService');
+        $siteData = singleton('SiteMapDataService');
         $pages = $siteData->getSitemapPages();
 
         $xml = new SimpleXMLElement('<urlset></urlset>');

@@ -5,7 +5,7 @@
  * 
  * @author Kirk Mayo <kirk.mayo@solnet.co.nz>
  */
-class SiteDataService {
+class SiteMapDataService {
     
     protected $items = array();
     
@@ -109,7 +109,6 @@ class SiteDataService {
         }
         
         $this->loopstuff($final, $all, $allids, 0);
-        $pagesByID = array();
         foreach ($final as $id => $page) {
             if (!isset($page[$id]) && $id > 0) {
                 $this->allPages[$id] = $page;
@@ -150,7 +149,6 @@ class SiteDataService {
         }
         
         $this->loopstuff($final, $all, $allids, 0);
-        $pagesByID = array();
         foreach ($final as $id => $page) {
             if (!isset($page[$id]) && $id > 0) {
                 $this->allPages[$id] = $page;

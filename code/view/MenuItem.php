@@ -7,11 +7,11 @@
  */
 class MenuItem extends ArrayData {
     /**
-     * @var SiteDataService
+     * @var SiteMapDataService
      */
     protected $siteData;
     
-    public function __construct($value, SiteDataService $siteData) {
+    public function __construct($value, SiteMapDataService $siteData) {
         if (!isset($value['MenuTitle']) || strlen($value['MenuTitle']) == 0 && strlen($value['MenuTitle'])) {
             if (isset($value['Title'])) {
                 $value['MenuTitle'] = $value['Title'];
