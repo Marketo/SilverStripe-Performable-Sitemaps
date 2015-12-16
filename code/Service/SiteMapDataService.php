@@ -11,9 +11,9 @@ class SiteMapDataService {
     
     protected $mapped = array();
 
-    protected $processed = array();
+    public $processed = array();
 
-    protected $allPages = array();
+    public $allPages = array();
 
     /**
      *
@@ -83,7 +83,7 @@ class SiteMapDataService {
         
         $counter = 0;
         
-        $this->loopstuff($final, $all, $allids, 0);
+        $this->processRows($final, $all, $allids, 0);
         
         $ordered = ArrayList::create();
         // start at 0
@@ -108,18 +108,13 @@ class SiteMapDataService {
             }
         }
         
-        $this->loopstuff($final, $all, $allids, 0);
+        $this->processRows($final, $all, $allids, 0);
         foreach ($final as $id => $page) {
             if (!isset($page[$id]) && $id > 0) {
                 $this->allPages[$id] = $page;
             }
         }
         return new ArrayList($final);
-    }
-
-    public function getHierarchicalHTMLList() {
-        $xml = $this->getHierarchicalSitemapHTML();
-        return $xml;
     }
 
     protected function processPageToXML($xml, $page) {
@@ -129,57 +124,6 @@ class SiteMapDataService {
             $child->addChild('loc', $page['Title']);
             $child->addChild('changefreq', $page['ChangeFreq']);
             $child->addChild('priority', $page['Priority']);
-            // add page id to processed
-            $this->processed[$page['ID']] = true;
-        }
-        return $xml;
-    }
-
-    public function getHierarchicalSitemapHTML() {
-        $all = array();
-        $allids = array();
-        $final = array();
-        
-        $public = $this->getNodes();
-        foreach ($public as $row) {
-            if (!isset($allids[$row['ID']])) {
-                $allids[$row['ID']] = true;
-                $all[] = $row;
-            }
-        }
-        
-        $this->loopstuff($final, $all, $allids, 0);
-        foreach ($final as $id => $page) {
-            if (!isset($page[$id]) && $id > 0) {
-                $this->allPages[$id] = $page;
-            }
-        }
-        $sitemapXML = new SimpleXMLElement('<div></div>');
-        $sitemapXML->addAttribute('id', 'SitemapList');
-        foreach ($this->allPages as $id => $page) {
-            $sitemapXML = $this->processPageToHierarchicalHTML($sitemapXML, $page);
-        }
-        return $sitemapXML->asXML();
-    }
-
-    protected function processPageToHierarchicalHTML($xml, $page) {
-        if (isset($page['ID']) && !isset($this->processed[$page['ID']])) {
-            // add stuff
-            $ul = $xml->addChild('ul');
-            $li = $ul->addChild('li');
-            $li->a = $page['Title'];
-            $li->a->addAttribute('href', $page['URLSegment']);
-            // check if they have children
-            if (isset($page['kids'])) {
-                foreach ($page['kids'] as $index => $subPage) {
-                    if (isset($this->allPages[$subPage])) {
-                        $this->processPageToHierarchicalHTML(
-                            $li,
-                            $this->allPages[$subPage]
-                        );
-                    }
-                }
-            }
             // add page id to processed
             $this->processed[$page['ID']] = true;
         }
@@ -207,7 +151,7 @@ class SiteMapDataService {
         return $fields;
     }
     
-    protected function getNodes() {
+    public function getNodes() {
         $fields = $this->queryFields();
 
         $query = new SQLQuery($fields, 'SiteTree_Live');
@@ -319,7 +263,7 @@ class SiteMapDataService {
         return $node;
     }
 
-    protected function loopstuff (&$final, $remaining, $ids, $lastcount) {
+    public function processRows (&$final, $remaining, $ids, $lastcount) {
         $deferred = array();
         foreach ($remaining as $row) {
             // orphan
@@ -348,7 +292,7 @@ class SiteMapDataService {
         
         $lastcount = count($deferred);
         if (count($deferred)) {
-            $this->loopstuff($final, $deferred, $ids, $lastcount);
+            $this->processRows($final, $deferred, $ids, $lastcount);
         }
     }
 }
