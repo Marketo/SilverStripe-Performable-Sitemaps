@@ -48,9 +48,10 @@ class GenerateSiteMapJob extends AbstractQueuedJob {
             'xsi:schemaLocation',
             'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'
         );
+        $siteURL = Director::absoluteBaseURL();
         foreach ($pages as $page) {
             $url = $xml->addChild('url');
-            $url->addChild('loc', $page->URLSegment);
+            $url->addChild('loc', $siteURL . $page->URLSegment);
             $url->addChild('changefreq', $page->ChangeFreq);
             $url->addChild('priority', $page->Priority);
         }
