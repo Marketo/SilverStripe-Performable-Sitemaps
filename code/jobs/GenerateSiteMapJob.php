@@ -37,26 +37,8 @@ class GenerateSiteMapJob extends AbstractQueuedJob {
     }
 
     public function process() {
-        $sitemap = BASE_PATH . '/sitemap.xml';
-        $siteData = singleton('SiteMapDataService');
-        $pages = $siteData->getSitemapPages();
-
-        $xml = new SimpleXMLElement('<urlset></urlset>');
-        $xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
-        $xml->addAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-        $xml->addAttribute(
-            'xsi:schemaLocation',
-            'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'
-        );
-        $siteURL = Director::absoluteBaseURL();
-        foreach ($pages as $page) {
-            $url = $xml->addChild('url');
-            $url->addChild('loc', $siteURL . $page->URLSegment);
-            $url->addChild('changefreq', $page->ChangeFreq);
-            $url->addChild('priority', $page->Priority);
-        }
-
-        file_put_contents($sitemap, $xml->asXML());
+        $sitemap = singleton('SiteMapXMLController');
+        $sitemap->generateSiteMap(ASSETS_PATH . '/sitemap.xml');
         $this->completeJob();
         return;
     }

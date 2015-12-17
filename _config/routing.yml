@@ -1,0 +1,7 @@
+---
+Name: sitemaproutes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'sitemap.xml': 'SiteMapXMLController'
