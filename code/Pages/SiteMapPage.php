@@ -1,15 +1,17 @@
 <?php
 
-class SiteMapPage extends SiteTree {
-    
+class SiteMapPage extends SiteTree
+{
 }
 
-class SiteMapPage_Controller extends ContentController {
+class SiteMapPage_Controller extends ContentController
+{
     /**
      * Returns content with the sitemap appended to it for a SiteMap page
      * @return ViewableData
      */
-    public function index() {
+    public function index()
+    {
         $results = array();
 
         $page = $this->data();
@@ -21,7 +23,8 @@ class SiteMapPage_Controller extends ContentController {
         )))->renderWith('Page');
     }
 
-    public function getHierarchicalSitemapHTML() {
+    public function getHierarchicalSitemapHTML()
+    {
         $all = array();
         $allids = array();
         $final = array();
@@ -49,7 +52,8 @@ class SiteMapPage_Controller extends ContentController {
         return $sitemapXML->asXML();
     }
 
-    protected function processPageToHierarchicalHTML($xml, $page) {
+    protected function processPageToHierarchicalHTML($xml, $page)
+    {
         $siteData = singleton('SiteMapDataService');
         if (isset($page['ID']) && !isset($siteData->processed[$page['ID']])) {
             // add stuff

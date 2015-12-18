@@ -5,24 +5,27 @@
  *
  * @author marcus
  */
-class MenuItem extends ArrayData {
+class MenuItem extends ArrayData
+{
     /**
      * @var SiteMapDataService
      */
     protected $siteData;
     
-    public function __construct($value, SiteMapDataService $siteData) {
+    public function __construct($value, SiteMapDataService $siteData)
+    {
         if (!isset($value['MenuTitle']) || strlen($value['MenuTitle']) == 0 && strlen($value['MenuTitle'])) {
             if (isset($value['Title'])) {
                 $value['MenuTitle'] = $value['Title'];
-            } 
+            }
         }
         parent::__construct($value);
         
         $this->siteData = $siteData;
     }
     
-    public function Children() {
+    public function Children()
+    {
         $kids = ArrayList::create();
         
         if (isset($this->array['kids'])) {
@@ -37,18 +40,20 @@ class MenuItem extends ArrayData {
         return $kids;
     }
     
-    public function getAncestors() {
+    public function getAncestors()
+    {
         $ancestors = new ArrayList();
         $object    = $this;
         
-        while($object = $object->getParent()) {
+        while ($object = $object->getParent()) {
             $ancestors->push($object);
         }
         
         return $ancestors;
     }
     
-    public function getParent() {
+    public function getParent()
+    {
         return $this->ParentID ? $this->siteData->getItem($this->ParentID) : null;
     }
     
@@ -57,7 +62,8 @@ class MenuItem extends ArrayData {
      *
      * @return bool
      */
-    public function isCurrent() {
+    public function isCurrent()
+    {
         return $this->ID ? $this->ID == Director::get_current_page()->ID : false;
     }
     
@@ -67,7 +73,8 @@ class MenuItem extends ArrayData {
      *
      * @return bool
      */
-    public function isSection() {
+    public function isSection()
+    {
         if ($this->isCurrent()) {
             return true;
         }
@@ -78,7 +85,6 @@ class MenuItem extends ArrayData {
                 $ancestors = $node->getAncestors();
                 return $ancestors && in_array($this->ID, $node->getAncestors()->column());
             }
-            
         }
         return false;
     }
@@ -90,9 +96,12 @@ class MenuItem extends ArrayData {
      * 
      * @return bool
      */
-    public function isOrphaned() {
+    public function isOrphaned()
+    {
         // Always false for root pages
-        if(empty($this->ParentID)) return false;
+        if (empty($this->ParentID)) {
+            return false;
+        }
         
         // Parent must exist and not be an orphan itself
         $parent = $this->getParent();
@@ -104,7 +113,8 @@ class MenuItem extends ArrayData {
      *
      * @return string
      */
-    public function LinkOrCurrent() {
+    public function LinkOrCurrent()
+    {
         return $this->isCurrent() ? 'current' : 'link';
     }
     
@@ -113,7 +123,8 @@ class MenuItem extends ArrayData {
      *
      * @return string
      */
-    public function LinkOrSection() {
+    public function LinkOrSection()
+    {
         return $this->isSection() ? 'section' : 'link';
     }
     
@@ -123,10 +134,11 @@ class MenuItem extends ArrayData {
      *
      * @return string
      */
-    public function LinkingMode() {
-        if($this->isCurrent()) {
+    public function LinkingMode()
+    {
+        if ($this->isCurrent()) {
             return 'current';
-        } elseif($this->isSection()) {
+        } elseif ($this->isSection()) {
             return 'section';
         } else {
             return 'link';
@@ -139,15 +151,15 @@ class MenuItem extends ArrayData {
      * @param string $sectionName Name of the section to check
      * @return bool True if we are in the given section
      */
-    public function InSection($sectionName) {
+    public function InSection($sectionName)
+    {
         $page = Director::get_current_page();
-        while($page) {
-            if($sectionName == $page->URLSegment)
+        while ($page) {
+            if ($sectionName == $page->URLSegment) {
                 return true;
+            }
             $page = $page->Parent;
         }
         return false;
     }
 }
-
-
