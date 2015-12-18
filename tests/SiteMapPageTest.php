@@ -12,8 +12,6 @@ class  SiteMapPageTest extends SapphireTest {
 
     public function setup() {
         parent::setup();
-
-        $this->loadFixture('SilverStripe-Performable-Sitemaps/tests/SiteMapPageTest.yml');
     }
 
     public function testPage() {
