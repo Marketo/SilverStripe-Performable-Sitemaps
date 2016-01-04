@@ -1,12 +1,14 @@
 <?php
 
-class SiteMapExtension extends DataExtension {
+class SiteMapExtension extends DataExtension
+{
     private static $db = array(
         'ChangeFreq' => "Enum(array('daily', 'weekly'), 'daily')",
         'Priority' => "Enum('0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0', 0.0)"
     );
 
-    public function updateSettingsFields(FieldList $fields) {
+    public function updateSettingsFields(FieldList $fields)
+    {
         $changeFreq = Singleton('Page')->dbObject('ChangeFreq')->enumValues();
         $fields->push(
             DropDownField::create('ChangeFreq', 'Change Frequency', $changeFreq)
@@ -15,5 +17,5 @@ class SiteMapExtension extends DataExtension {
         $fields->push(
             DropDownField::create('Priority', 'Priority', $priority)
         );
-    } 
+    }
 }

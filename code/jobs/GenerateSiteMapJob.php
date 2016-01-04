@@ -5,25 +5,29 @@
  *
  * A job for generating a XML sitemap
  */
-class GenerateSiteMapJob extends AbstractQueuedJob {
+class GenerateSiteMapJob extends AbstractQueuedJob
+{
     /**
      * @var int
      * Rerun the job each day
      */
     private static $regenerate_time = 86400;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->currentStep = 0;
     }
 
-    public function getJobType() {
+    public function getJobType()
+    {
         return QueuedJob::QUEUED;
     }
 
     /**
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return 'A job for generating a XML sitemap';
     }
 
@@ -32,11 +36,13 @@ class GenerateSiteMapJob extends AbstractQueuedJob {
      *
      * @return string
      */
-    public function getSignature() {
+    public function getSignature()
+    {
         return md5(get_class($this));
     }
 
-    public function process() {
+    public function process()
+    {
         $sitemap = singleton('SiteMapXMLController');
         $sitemap->generateSiteMap(ASSETS_PATH . '/sitemap.xml');
         $this->completeJob();
@@ -46,7 +52,8 @@ class GenerateSiteMapJob extends AbstractQueuedJob {
     /**
      * Setup the next cron job
      */
-    protected function completeJob() {
+    protected function completeJob()
+    {
         $this->isComplete = true;
         $nextgeneration = new GenerateSiteMapJob();
         singleton('QueuedJobService')

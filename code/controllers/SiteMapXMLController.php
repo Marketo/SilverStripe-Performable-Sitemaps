@@ -5,12 +5,14 @@
  * 
  * @author Kirk Mayo <kirk.mayo@solnet.co.nz>
  */
-class SiteMapXMLController extends Controller {
+class SiteMapXMLController extends Controller
+{
     private static $allowed_actions = array(
         'index'
     );
 
-    public function index(SS_HTTPRequest $request) {
+    public function index(SS_HTTPRequest $request)
+    {
         $url = $request->getVar('url');
         $sitemap = ASSETS_PATH . $url;
         if (file_exists($sitemap)) {
@@ -24,12 +26,13 @@ class SiteMapXMLController extends Controller {
         } else {
             $this->generateSiteMap($sitemap);
         }
-        header ("Content-Type:text/xml");
+        header("Content-Type:text/xml");
         readfile($sitemap);
         exit;
     }
 
-    public function generateSiteMap($sitemap = 'sitemap.xml') {
+    public function generateSiteMap($sitemap = 'sitemap.xml')
+    {
         $siteData = singleton('SiteMapDataService');
         $pages = $siteData->getSitemapPages();
 
@@ -51,4 +54,3 @@ class SiteMapXMLController extends Controller {
         file_put_contents($sitemap, $xml->asXML());
     }
 }
-

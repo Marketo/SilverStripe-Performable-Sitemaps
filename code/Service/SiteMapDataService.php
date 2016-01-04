@@ -5,7 +5,8 @@
  * 
  * @author Kirk Mayo <kirk.mayo@solnet.co.nz>
  */
-class SiteMapDataService {
+class SiteMapDataService
+{
     
     protected $items = array();
     
@@ -35,12 +36,14 @@ class SiteMapDataService {
      */
     public $injector;
     
-    public function getItem($id) {
+    public function getItem($id)
+    {
         $this->getItems();
         return isset($this->items[$id]) ? $this->items[$id] : null;
     }
     
-    public function getItems() {
+    public function getItems()
+    {
         if (!$this->items) {
             $this->generateMenuItems();
         }
@@ -48,7 +51,8 @@ class SiteMapDataService {
         return $this->items;
     }
     
-    public function generateMenuItems() {
+    public function generateMenuItems()
+    {
         $all = array();
         $allids = array();
         
@@ -95,7 +99,8 @@ class SiteMapDataService {
         }
     }
 
-    public function getSitemapPages() {
+    public function getSitemapPages()
+    {
         $all = array();
         $allids = array();
         $final = array();
@@ -117,7 +122,8 @@ class SiteMapDataService {
         return new ArrayList($final);
     }
 
-    protected function processPageToXML($xml, $page) {
+    protected function processPageToXML($xml, $page)
+    {
         if (isset($page['ID']) && !isset($this->processed[$page['ID']])) {
             // add stuff
             $child = $xml->addChild('url');
@@ -130,7 +136,8 @@ class SiteMapDataService {
         return $xml;
     }
 
-    protected function queryFields() {
+    protected function queryFields()
+    {
         $fields = array(
             '"SiteTree_Live"."ID" AS ID',
             'ClassName',
@@ -151,7 +158,8 @@ class SiteMapDataService {
         return $fields;
     }
     
-    public function getNodes() {
+    public function getNodes()
+    {
         $fields = $this->queryFields();
 
         $query = new SQLQuery($fields, 'SiteTree_Live');
@@ -162,7 +170,8 @@ class SiteMapDataService {
         return $results;
     }
 
-    protected function getPublicNodes() {
+    protected function getPublicNodes()
+    {
         $fields = $this->queryFields();
 
         $query = new SQLQuery($fields, 'SiteTree');
@@ -185,7 +194,8 @@ class SiteMapDataService {
      * Get private nodes, assuming SilverStripe's default perm structure
      * @return SS_Query
      */
-    protected function getPrivateNodes() {
+    protected function getPrivateNodes()
+    {
         if (!Member::currentUserID()) {
             return array();
         }
@@ -218,16 +228,17 @@ class SiteMapDataService {
         return $results;
     }
 
-    protected function adjustForVersioned(SQLQuery $query) {
+    protected function adjustForVersioned(SQLQuery $query)
+    {
         $ownerClass = 'Page';
         $stage = Versioned::current_stage();
-        if($stage && ($stage != 'Stage')) {
-            foreach($query->getFrom() as $table => $dummy) {
+        if ($stage && ($stage != 'Stage')) {
+            foreach ($query->getFrom() as $table => $dummy) {
                 // Only rewrite table names that are actually part of the subclass tree
                 // This helps prevent rewriting of other tables that get joined in, in
                 // particular, many_many tables
-                if(class_exists($table) && ($table == $ownerClass
-                        || is_subclass_of($table, $ownerClass) 
+                if (class_exists($table) && ($table == $ownerClass
+                        || is_subclass_of($table, $ownerClass)
                         || is_subclass_of($ownerClass, $table))) {
                     $query->renameTable($table, $table . '_' . $stage);
                 }
@@ -235,13 +246,14 @@ class SiteMapDataService {
         }
     }
     
-    protected function buildLinks($node, $parent, $out, $nodemap) {
+    protected function buildLinks($node, $parent, $out, $nodemap)
+    {
         $kids = isset($node['kids']) ? $node['kids'] : array();
         $node = $this->createMenuNode($node);
         $out->push($node);
 
-        $node->Link = ltrim($parent 
-            ? $parent->Link . '/' . $node->URLSegment 
+        $node->Link = ltrim($parent
+            ? $parent->Link . '/' . $node->URLSegment
             : $node->URLSegment, '/');
         
         foreach ($kids as $id) {
@@ -256,14 +268,16 @@ class SiteMapDataService {
      * @param array $data
      * @returns MenuItem
      */
-    public function createMenuNode($data) {
+    public function createMenuNode($data)
+    {
         $cls = $this->itemClass;
         $node = $cls::create($data, $this);
         $this->items[$node->ID] = $node;
         return $node;
     }
 
-    public function processRows (&$final, $remaining, $ids, $lastcount) {
+    public function processRows(&$final, $remaining, $ids, $lastcount)
+    {
         $deferred = array();
         foreach ($remaining as $row) {
             // orphan
@@ -278,8 +292,8 @@ class SiteMapDataService {
             } else {
                 
                 // add to the hierarchy of things
-                $existing = isset($final[$row['ParentID']]['kids']) 
-                    ? $final[$row['ParentID']]['kids'] 
+                $existing = isset($final[$row['ParentID']]['kids'])
+                    ? $final[$row['ParentID']]['kids']
                     : array();
                 $existing[] = $row['ID'];
                 $final[$row['ParentID']]['kids'] = $existing;
@@ -296,4 +310,3 @@ class SiteMapDataService {
         }
     }
 }
-
