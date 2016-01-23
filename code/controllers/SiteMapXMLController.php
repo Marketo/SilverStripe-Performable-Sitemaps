@@ -15,7 +15,7 @@ class SiteMapXMLController extends Controller
     {
         $url = $request->getVar('url');
         $sitemap = ASSETS_PATH . $url;
-        if (file_exists($sitemap)) {
+        if (file_exists($sitemap) && !isset($_GET['flush'])) {
             $now = time();
             $fileAge = filemtime($sitemap);
             $age = ($now - $fileAge);
@@ -34,7 +34,7 @@ class SiteMapXMLController extends Controller
     public function generateSiteMap($sitemap = 'sitemap.xml')
     {
         $siteData = singleton('SiteMapDataService');
-        $pages = $siteData->getSitemapPages();
+        $pages = $siteData->getItems();
 
         $xml = new SimpleXMLElement('<urlset></urlset>');
         $xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
@@ -46,7 +46,7 @@ class SiteMapXMLController extends Controller
         $siteURL = Director::absoluteBaseURL();
         foreach ($pages as $page) {
             $url = $xml->addChild('url');
-            $url->addChild('loc', $siteURL . $page->URLSegment);
+            $url->addChild('loc', $siteURL . $page->Link);
             $url->addChild('changefreq', $page->ChangeFreq);
             $url->addChild('priority', $page->Priority);
         }

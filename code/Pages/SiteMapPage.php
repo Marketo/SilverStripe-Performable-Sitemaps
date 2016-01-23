@@ -19,61 +19,61 @@ class SiteMapPage_Controller extends ContentController
         $content = $this->owner->Content;
 
         return $this->customise(new ArrayData(array(
-            'Content' => $content . $sitemap
+            'Content' => str_replace("<?xml version=\"1.0\"?>\n", '', $sitemap)
         )))->renderWith('Page');
     }
 
-    public function getHierarchicalSitemapHTML()
-    {
+    public function getHierarchicalSitemapHTML() {
         $all = array();
         $allids = array();
         $final = array();
-
-        $siteData = singleton('SiteMapDataService');
-        $public = $siteData->getNodes();
-        foreach ($public as $row) {
-            if (!isset($allids[$row['ID']])) {
-                $allids[$row['ID']] = true;
-                $all[] = $row;
-            }
-        }
-
-        $siteData->processRows($final, $all, $allids, 0);
-        foreach ($final as $id => $page) {
-            if (!isset($page[$id]) && $id > 0) {
-                $siteData->allPages[$id] = $page;
-            }
-        }
-        $sitemapXML = new SimpleXMLElement('<div></div>');
+        
+		$page = $this->data();
+        $siteData = $page->siteData ? $page->siteData : singleton('SiteMapDataService');
+		
+		$items = $siteData->getItems();
+		
+		// get just the top level ones; ie parentID = 0;
+		
+		$topLevel = array();
+		foreach ($items as $item) {
+			if ($item->ParentID == 0) {
+				$topLevel[] = $item;
+			}
+		}
+		
+		$sitemapXML = new SimpleXMLElement('<div></div>');
         $sitemapXML->addAttribute('id', 'SitemapList');
-        foreach ($siteData->allPages as $id => $page) {
-            $sitemapXML = $this->processPageToHierarchicalHTML($sitemapXML, $page);
-        }
-        return $sitemapXML->asXML();
+		
+		foreach ($topLevel as $item) {
+			$sitemapXML = $this->processPageToHierarchicalHTML($sitemapXML, $item);
+		}
+		
+		return $sitemapXML->asXML();
     }
 
-    protected function processPageToHierarchicalHTML($xml, $page)
-    {
-        $siteData = singleton('SiteMapDataService');
-        if (isset($page['ID']) && !isset($siteData->processed[$page['ID']])) {
+	protected $processed = array();
+
+    protected function processPageToHierarchicalHTML($xml, $page) {
+        if ($page->ID && !isset($this->processed[$page->ID])) {
             // add stuff
             $ul = $xml->addChild('ul');
             $li = $ul->addChild('li');
-            $li->a = $page['Title'];
-            $li->a->addAttribute('href', $page['URLSegment']);
+            $li->a = $page->Title;
+            $li->a->addAttribute('href', $page->Link);
             // check if they have children
-            if (isset($page['kids'])) {
-                foreach ($page['kids'] as $index => $subPage) {
-                    if (isset($siteData->allPages[$subPage])) {
-                        $this->processPageToHierarchicalHTML(
-                            $li,
-                            $siteData->allPages[$subPage]
-                        );
-                    }
+			$kids = $page->Children();
+			
+            if (count($kids)) {
+                foreach ($kids as $subPage) {
+                    $this->processPageToHierarchicalHTML(
+						$li,
+						$subPage
+					);
                 }
             }
             // add page id to processed
-            $siteData->processed[$page['ID']] = true;
+            $this->processed[$page->ID] = true;
         }
         return $xml;
     }

@@ -5,7 +5,7 @@
  *
  * @author marcus
  */
-class MenuItem extends ArrayData
+class SiteMapMenuItem extends ArrayData
 {
     /**
      * @var SiteMapDataService

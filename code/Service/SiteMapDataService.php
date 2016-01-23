@@ -20,7 +20,7 @@ class SiteMapDataService
      *
      * @var string
      */
-    public $itemClass = 'MenuItem';
+    public $itemClass = 'SiteMapMenuItem';
     
     /**
      * Additional fields to be queried from the SiteTree/Page tables
@@ -139,7 +139,7 @@ class SiteMapDataService
     protected function queryFields()
     {
         $fields = array(
-            '"SiteTree_Live"."ID" AS ID',
+            '"SiteTree"."ID" AS ID',
             'ClassName',
             'Title',
             'MenuTitle',
@@ -162,7 +162,7 @@ class SiteMapDataService
     {
         $fields = $this->queryFields();
 
-        $query = new SQLQuery($fields, 'SiteTree_Live');
+        $query = new SQLQuery($fields, '"SiteTree"');
         $query = $query->setOrderBy('Sort', 'ASC');
         
         $this->adjustForVersioned($query);
@@ -174,7 +174,7 @@ class SiteMapDataService
     {
         $fields = $this->queryFields();
 
-        $query = new SQLQuery($fields, 'SiteTree');
+        $query = new SQLQuery($fields, '"SiteTree"');
         //$query = $query->addInnerJoin('Page', '"SiteTree"."ID" = "Page"."ID"');
         $query = $query->setOrderBy('Sort', 'ASC');
         
@@ -207,7 +207,7 @@ class SiteMapDataService
         
         $fields = $this->queryFields();
 
-        $query = new SQLQuery($fields, 'SiteTree');
+        $query = new SQLQuery($fields, '"SiteTree"');
         //$query = $query->addInnerJoin('Page', '"SiteTree"."ID" = "Page"."ID"');
         $query = $query->setOrderBy('ParentID', 'ASC');
 
@@ -245,6 +245,14 @@ class SiteMapDataService
             }
         }
     }
+	
+	protected function adjustPrivateNodeQuery(SQLQuery $query) {
+		
+	}
+	
+	protected function getAdditionalNodes() {
+		return array();
+	}
     
     protected function buildLinks($node, $parent, $out, $nodemap)
     {
@@ -266,7 +274,7 @@ class SiteMapDataService
      * Creates a menu item from an array of data
      * 
      * @param array $data
-     * @returns MenuItem
+     * @returns SiteMapMenuItem
      */
     public function createMenuNode($data)
     {
