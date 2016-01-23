@@ -19,7 +19,16 @@
 		{
 			"name": "Kirk Mayo",
 			"email": "kirk@stripetheweb.com"
+		},
+		{
+			"name": "Marcus Nyeholt",
+			"email": "marcus@silverstripe.com.au"
 		}
 	],
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.1.x-dev"
+		}
+	},
 	"minimum-stability": "dev"
 }
