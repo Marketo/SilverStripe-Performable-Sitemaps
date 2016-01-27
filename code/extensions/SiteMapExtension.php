@@ -10,11 +10,13 @@ class SiteMapExtension extends DataExtension
     public function updateSettingsFields(FieldList $fields)
     {
         $changeFreq = Singleton('Page')->dbObject('ChangeFreq')->enumValues();
-        $fields->push(
+        $fields->addFieldToTab(
+			'Root.Settings',
             DropDownField::create('ChangeFreq', 'Change Frequency', $changeFreq)
         );
         $priority = Singleton('Page')->dbObject('Priority')->enumValues();
-        $fields->push(
+        $fields->addFieldToTab(
+			'Root.Settings',
             DropDownField::create('Priority', 'Priority', $priority)
         );
     }
