@@ -1,10 +1,10 @@
 <?php
 
-class SiteMapPage extends SiteTree
+class SiteMapPage extends Page
 {
 }
 
-class SiteMapPage_Controller extends ContentController
+class SiteMapPage_Controller extends Page_Controller
 {
     /**
      * Returns content with the sitemap appended to it for a SiteMap page
@@ -16,11 +16,9 @@ class SiteMapPage_Controller extends ContentController
 
         $page = $this->data();
         $sitemap = $this->getHierarchicalSitemapHTML();
-        $content = $this->owner->Content;
 
-        return $this->customise(new ArrayData(array(
-            'Content' => str_replace("<?xml version=\"1.0\"?>\n", '', $sitemap)
-        )))->renderWith('Page');
+		return array('Content' => str_replace("<?xml version=\"1.0\"?>\n", '', $sitemap));
+		
     }
 
     public function getHierarchicalSitemapHTML() {
@@ -37,7 +35,7 @@ class SiteMapPage_Controller extends ContentController
 		
 		$topLevel = array();
 		foreach ($items as $item) {
-			if ($item->ParentID == 0) {
+			if ($item->ParentID == 0 && $item->ShowInMenus) {
 				$topLevel[] = $item;
 			}
 		}

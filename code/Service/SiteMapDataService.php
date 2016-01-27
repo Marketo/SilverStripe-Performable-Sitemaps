@@ -261,8 +261,12 @@ class SiteMapDataService
         $out->push($node);
 
         $node->Link = ltrim($parent
-            ? $parent->Link . '/' . $node->URLSegment
+            ? ($parent->Link == '' ? 'home' : $parent->Link) . '/' . $node->URLSegment
             : $node->URLSegment, '/');
+		
+		if ($node->Link == 'home') {
+			$node->Link = '';
+		}
         
         foreach ($kids as $id) {
             $n = $nodemap[$id];
