@@ -7,7 +7,7 @@
 		"sitemap"
 	],
 	"require": {
-		"silverstripe/queuedjobs": "2.8.3",
+		"silverstripe/queuedjobs": "~2.3",
 		"silverstripe/cms": "3.*",
 		"composer/installers": "*"
 	},
