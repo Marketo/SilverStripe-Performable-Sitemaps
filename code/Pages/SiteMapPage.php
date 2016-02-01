@@ -27,7 +27,7 @@ class SiteMapPage_Controller extends Page_Controller
         $final = array();
         
 		$page = $this->data();
-        $siteData = $page->siteData ? $page->siteData : singleton('SiteMapDataService');
+        $siteData = $page->siteData ? $page->siteData : singleton('SiteDataService');
 		
 		$items = $siteData->getItems();
 		

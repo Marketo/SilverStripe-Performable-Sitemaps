@@ -33,7 +33,7 @@ class SiteMapXMLController extends Controller
 
     public function generateSiteMap($sitemap = 'sitemap.xml')
     {
-        $siteData = singleton('SiteMapDataService');
+        $siteData = singleton('SiteDataService');
         $pages = $siteData->getItems();
 
         $xml = new SimpleXMLElement('<urlset></urlset>');
