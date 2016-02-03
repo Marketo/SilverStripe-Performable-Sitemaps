@@ -10,6 +10,8 @@ class SiteMapXMLController extends Controller
     private static $allowed_actions = array(
         'index'
     );
+	
+	private static $base_url = '';
 
     public function index(SS_HTTPRequest $request)
     {
@@ -43,7 +45,12 @@ class SiteMapXMLController extends Controller
             'xsi:schemaLocation',
             'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'
         );
-        $siteURL = Director::absoluteBaseURL();
+		
+		$siteURL = self::config()->get('base_url');
+		if (!$siteURL) {
+			$siteURL = Director::absoluteBaseURL();
+		}
+        
         foreach ($pages as $page) {
             $url = $xml->addChild('url');
             $url->addChild('loc', $siteURL . $page->Link);
