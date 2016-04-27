@@ -13,6 +13,8 @@ class SiteMapXMLController extends Controller
 	
 	private static $base_url = '';
     
+    private static $match_host = '';
+
     private static $allowed_sub_hosts = array();
     
     private static $sitemap_name = 'sitemap.xml';
@@ -23,14 +25,16 @@ class SiteMapXMLController extends Controller
     {
         $sitemap = ASSETS_PATH . '/' . $this->config()->sitemap_name;
         $subhosts = $this->config()->allowed_sub_hosts;
+        $matchHost = $this->config()->match_host;
         
         $generateAsHost = null;
         
-        if (is_array($subhosts) && in_array($_SERVER['HTTP_HOST'], $subhosts)) {
+        if (is_array($subhosts) && in_array($_SERVER['HTTP_HOST'], $subhosts) ||
+            $matchHost && substr($_SERVER['HTTP_HOST'], -strlen($matchHost)) == $matchHost) {
             $generateAsHost = $_SERVER['HTTP_HOST'];
             $sitemap = ASSETS_PATH .'/'. $generateAsHost . '.' . $this->config()->sitemap_name;
         }
-        
+
         if (file_exists($sitemap) && !isset($_GET['flush'])) {
             $now = time();
             $fileAge = filemtime($sitemap);
