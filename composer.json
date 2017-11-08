@@ -7,6 +7,7 @@
 		"sitemap"
 	],
 	"require": {
+		"php": ">=5.3.3",
 		"silverstripe/queuedjobs": "~2.3",
 		"silverstripe/cms": "3.*",
 		"nyeholt/silverstripe-performant": "~1.0"
