@@ -6,17 +6,19 @@
  * Some controller testing
  */
 
-class  SiteMapControllerTest extends FunctionalTest {
+class  SiteMapControllerTest extends FunctionalTest
+{
 
     private $sitemap = 'sitemap-test.xml';
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $page = new Page(
-                array(
-                    'title' => "Page $i"
-                )
+                [
+                    'title' => "Page $i",
+                ]
             );
             $page->write();
             $page->publish('Stage', 'Live');
@@ -26,7 +28,8 @@ class  SiteMapControllerTest extends FunctionalTest {
         $sitemap->write();
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         parent::tearDown();
         if (file_exists(ASSETS_PATH . "/{$this->sitemap}")) {
             unlink(ASSETS_PATH . "/{$this->sitemap}");
@@ -42,7 +45,8 @@ class  SiteMapControllerTest extends FunctionalTest {
         }
     }
 
-    public function testSiteMapGeneration() {
+    public function testSiteMapGeneration()
+    {
         $sitemap = ASSETS_PATH . "/{$this->sitemap}";
         $controller = new SiteMapXMLController();
         $controller->generateSiteMap($sitemap);
@@ -57,7 +61,8 @@ class  SiteMapControllerTest extends FunctionalTest {
         $this->assertTrue(file_exists($sitemap));
     }
 
-    public function testHTMLGeneration() {
+    public function testHTMLGeneration()
+    {
         $controller = new SiteMapPage_Controller();
         $html = $controller->getHierarchicalSitemapHTML();
 

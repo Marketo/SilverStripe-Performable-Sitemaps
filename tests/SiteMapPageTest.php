@@ -6,16 +6,19 @@
  * Some basic testing for the SiteMapPage
  */
 
-class  SiteMapPageTest extends SapphireTest {
+class  SiteMapPageTest extends SapphireTest
+{
 
-	protected static $fixture_file = 'SiteMapPageTest.yml';
+    protected static $fixture_file = 'SiteMapPageTest.yml';
 
-    public function setup() {
+    public function setup()
+    {
         parent::setup();
     }
 
-    public function testPage() {
-		$page = $this->objFromFixture('SiteMapPage', 'Page');
+    public function testPage()
+    {
+        $page = $this->objFromFixture('SiteMapPage', 'Page');
 
         $this->assertEquals($page->Title, 'SiteMap');
     }
