@@ -6,6 +6,12 @@
 Creates a Sitemap PageType and generates sitemap.xml files specific to each domain
 Also uses SQL Queries instead of the ORM for performance
 
+Add the following to you config if you want the sitemap to follow the ShowInMenus Page setting.
+~~~
+SiteMap:
+  ObserveShowInMenus: true
+~~~
+
 ## Maintainer Contact
 
 Kirk Mayo

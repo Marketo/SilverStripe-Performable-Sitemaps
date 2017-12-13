@@ -21,6 +21,9 @@ class SiteMapXMLController extends Controller
 
     private static $protocol = 'https';
 
+    /**
+     * @param SS_HTTPRequest $request
+     */
     public function index(SS_HTTPRequest $request)
     {
         $sitemap = ASSETS_PATH . '/' . $this->config()->sitemap_name;
@@ -51,8 +54,14 @@ class SiteMapXMLController extends Controller
         exit;
     }
 
+    /**
+     * @param string $sitemap SiteMap File
+     * @param string $siteURL Base URL
+     */
     public function generateSiteMap($sitemap = 'sitemap.xml', $siteURL = null)
     {
+        $observeMenu = Config::inst()->get('SiteMap', 'ObserveShowInMenus');
+        /** @var SiteDataService $siteData */
         $siteData = singleton('SiteDataService');
         $pages = $siteData->getItems();
 
@@ -77,7 +86,11 @@ class SiteMapXMLController extends Controller
             $siteURL = $this->config()->protocol . '://' . $siteURL;
         }
 
+        /** @var DataObjectNode $page */
         foreach ($pages as $page) {
+            if($observeMenu && $page->ShowInMenus){
+                continue;
+            }
             $url = $xml->addChild('url');
             $url->addChild('loc', $siteURL . $page->Link);
             $url->addChild('changefreq', $page->ChangeFreq);
