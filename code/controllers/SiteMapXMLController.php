@@ -61,8 +61,10 @@ class SiteMapXMLController extends Controller
     public function generateSiteMap($sitemap = 'sitemap.xml', $siteURL = null)
     {
         $observeMenu = Config::inst()->get('SiteMap', 'ObserveShowInMenus');
+        $observeSearch = Config::inst()->get('SiteMap', 'ObserveShowInSearch');
         /** @var SiteDataService $siteData */
         $siteData = singleton('SiteDataService');
+        $siteData->additionalFields[] = 'ShowInSearch';
         $pages = $siteData->getItems();
 
         $xml = new SimpleXMLElement('<urlset></urlset>');
@@ -88,7 +90,10 @@ class SiteMapXMLController extends Controller
 
         /** @var DataObjectNode $page */
         foreach ($pages as $page) {
-            if($observeMenu && $page->ShowInMenus){
+            if ($observeSearch && !$page->ShowInSearch) {
+                continue;
+            }
+            if ($observeMenu && !$page->ShowInMenus) {
                 continue;
             }
             $url = $xml->addChild('url');
