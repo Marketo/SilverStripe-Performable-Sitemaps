@@ -65,6 +65,8 @@ class SiteMapXMLController extends Controller
         /** @var SiteDataService $siteData */
         $siteData = singleton('SiteDataService');
         $siteData->additionalFields[] = 'ShowInSearch';
+        $siteData->additionalFields[] = 'ChangeFreq';
+        $siteData->additionalFields[] = 'Priority';
         $pages = $siteData->getItems();
 
         $xml = new SimpleXMLElement('<urlset></urlset>');
