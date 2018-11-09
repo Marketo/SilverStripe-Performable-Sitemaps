@@ -63,7 +63,7 @@ class SiteMapPage_Controller extends Page_Controller
             $li->a->addAttribute('href', $page->Link);
 
             // check if the page has children and if so output them
-            $kids = SiteTree::get()->filter('ParentID', $page->ID);
+            $kids = $page->Children();
             foreach ($kids as $subPage) {
                 $this->processPageToHierarchicalHTML(
                     $li,
