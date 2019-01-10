@@ -98,8 +98,17 @@ class SiteMapXMLController extends Controller
             if ($observeMenu && !$page->ShowInMenus) {
                 continue;
             }
+            if ($page->ClassName == 'ErrorPage' || $page->ClassName == 'UniversalErrorPage') {
+                continue;
+            }
+
+            $lastMod = explode(" ", $page->LastEdited);
+
             $url = $xml->addChild('url');
             $url->addChild('loc', $siteURL . $page->Link);
+            if ($lastMod) {
+                $url->addChild('lastmod', $lastMod[0]);
+            }
             $url->addChild('changefreq', $page->ChangeFreq);
             $url->addChild('priority', $page->Priority);
         }
