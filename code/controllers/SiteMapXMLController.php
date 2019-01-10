@@ -102,12 +102,12 @@ class SiteMapXMLController extends Controller
                 continue;
             }
 
-            $lastmod = explode(" ", $page->LastEdited);
+            $lastMod = explode(" ", $page->LastEdited);
 
             $url = $xml->addChild('url');
             $url->addChild('loc', $siteURL . $page->Link);
-            if ($lastmod) {
-                $url->addChild('lastmod', $lastmod[0]);
+            if ($lastMod) {
+                $url->addChild('lastmod', $lastMod[0]);
             }
             $url->addChild('changefreq', $page->ChangeFreq);
             $url->addChild('priority', $page->Priority);
