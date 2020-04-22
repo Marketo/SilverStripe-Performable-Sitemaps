@@ -8,9 +8,12 @@ class SiteMapPage_Controller extends Page_Controller
 {
     /**
      * Returns content with the sitemap appended to it for a SiteMap page
+     *
+     * @param SS_HTTPRequest $request
+     *
      * @return ViewableData
      */
-    public function index()
+    public function index($request)
     {
         $results = [];
 
